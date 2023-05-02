@@ -49,7 +49,9 @@ exports.accessToken = (req, res) => {
         });
         tokenRes.on("end", () => {
           const token = JSON.parse(tokenData);
+          console.log(token);
           req.session.token = token;
+          console.log("Debug 1");
           console.log(req.session);
           if (token) {
             res.writeHead(302, {
@@ -74,13 +76,14 @@ exports.accessToken = (req, res) => {
 // Example: Send "GET" request to CV endpoint to get user profile information
 exports.getProfileInformation = (req, res) => {
   try {
+    console.log(req.session.token.access_token);
     const profileOptions = {
       headers: {
         Authorization: `Bearer ${req.session.token.access_token}`,
       },
     };
     const profileReq = https.request(
-      "https://www.mycourseville.com/api/v1/public/users/me",
+      "https://www.mycourseville.com/api/v1/public/get/user/info",
       profileOptions,
       (profileRes) => {
         let profileData = "";
@@ -114,7 +117,7 @@ exports.getCourses = (req, res) => {
       },
     };
     const coursesReq = https.request(
-      "https://www.mycourseville.com/api/v1/public/get/user/courses",
+      "https://www.mycourseville.com/api/v1/public/get/user/courses?detail=1",
       coursesOptions,
       (coursesRes) => {
         let coursesData = "";
@@ -210,6 +213,6 @@ exports.getAssignmentDetail = (req, res) => {
 
 exports.logout = (req, res) => {
   req.session.destroy();
-  res.redirect(`http://${process.env.frontendIPAddress}/login.html`);
+  res.redirect(`http://${process.env.frontendIPAddress}`);
   res.end();
 };
