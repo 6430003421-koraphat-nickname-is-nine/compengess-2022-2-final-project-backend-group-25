@@ -152,7 +152,7 @@ exports.getCourseAssignments = (req, res) => {
       },
     };
     const assignmentsReq = https.request(
-      `https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${cv_cid}`,
+      `https://www.mycourseville.com/api/v1/public/get/course/assignments?cv_cid=${cv_cid}&detail=1`,
       assignmentsOptions,
       (assignmentsRes) => {
         let assignmentsData = "";
